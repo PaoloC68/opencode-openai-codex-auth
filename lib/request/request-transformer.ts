@@ -46,8 +46,45 @@ export function normalizeModel(model: string | undefined): string {
 	// like "GPT 5 Codex Low (ChatGPT Subscription)"
 	const normalized = modelId.toLowerCase();
 
+	// ChatGPT OAuth/Codex backend does not support Pro tier model IDs.
+	// Keep this explicit so users get a clear error instead of a generic 400.
+	if (
+		normalized.includes("gpt-5.5-pro") ||
+		normalized.includes("gpt 5.5 pro")
+	) {
+		return "gpt-5.5-pro";
+	}
+
 	// Priority order for pattern matching (most specific first):
-	// 1. GPT-5.2 Codex (newest codex model)
+	// 1. Codex variants (newest first)
+	// Treat newer codex variants as first-class (do NOT downgrade)
+	if (
+		normalized.includes("gpt-5.5-codex") ||
+		normalized.includes("gpt 5.5 codex")
+	) {
+		return "gpt-5.5-codex";
+	}
+	if (
+		normalized.includes("gpt-5.4-codex") ||
+		normalized.includes("gpt 5.4 codex")
+	) {
+		return "gpt-5.4-codex";
+	}
+	if (
+		normalized.includes("gpt-5.3-codex-spark") ||
+		normalized.includes("gpt 5.3 codex spark") ||
+		normalized.includes("gpt-5.3-codex_spark")
+	) {
+		return "gpt-5.3-codex-spark";
+	}
+	if (
+		normalized.includes("gpt-5.3-codex") ||
+		normalized.includes("gpt 5.3 codex")
+	) {
+		return "gpt-5.3-codex";
+	}
+
+	// 2. GPT-5.2 Codex
 	if (
 		normalized.includes("gpt-5.2-codex") ||
 		normalized.includes("gpt 5.2 codex")
@@ -55,7 +92,21 @@ export function normalizeModel(model: string | undefined): string {
 		return "gpt-5.2-codex";
 	}
 
-	// 2. GPT-5.2 (general purpose)
+	// 3. GPT-5.5 / 5.4 / 5.3 general purpose
+	if (normalized.includes("gpt-5.5") || normalized.includes("gpt 5.5")) {
+		return "gpt-5.5";
+	}
+	if (normalized.includes("gpt-5.4-mini") || normalized.includes("gpt 5.4 mini")) {
+		return "gpt-5.4-mini";
+	}
+	if (normalized.includes("gpt-5.4") || normalized.includes("gpt 5.4")) {
+		return "gpt-5.4";
+	}
+	if (normalized.includes("gpt-5.3") || normalized.includes("gpt 5.3")) {
+		return "gpt-5.3";
+	}
+
+	// 4. GPT-5.2 (general purpose)
 	if (normalized.includes("gpt-5.2") || normalized.includes("gpt 5.2")) {
 		return "gpt-5.2";
 	}
@@ -99,7 +150,10 @@ export function normalizeModel(model: string | undefined): string {
 	}
 
 	// 8. GPT-5 Codex family (any variant with "codex")
+	// If we don't recognize the exact variant, prefer the newest known Codex slug.
 	if (normalized.includes("codex")) {
+		if (normalized.includes("spark")) return "gpt-5.3-codex-spark";
+		// Keep legacy behavior for generic "gpt-5-codex" style names.
 		return "gpt-5.1-codex";
 	}
 
@@ -427,6 +481,12 @@ export async function transformRequestBody(
 ): Promise<RequestBody> {
 	const originalModel = body.model;
 	const normalizedModel = normalizeModel(body.model);
+
+	if (normalizedModel === "gpt-5.5-pro") {
+		throw new Error(
+			"The 'gpt-5.5-pro' model is not supported when using Codex with a ChatGPT account. Use gpt-5.5 instead.",
+		);
+	}
 
 	// Get model-specific configuration using ORIGINAL model name (config key)
 	// This allows per-model options like "gpt-5-codex-low" to work correctly

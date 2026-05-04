@@ -68,12 +68,12 @@ Both configs provide:
 3. **Run opencode**:
    ```bash
    # Modern config (v1.0.210+):
-   opencode run "task" --model=openai/gpt-5.2 --variant=medium
-   opencode run "task" --model=openai/gpt-5.2 --variant=high
+   opencode run "task" --model=openai/gpt-5.5 --variant=medium
+   opencode run "task" --model=openai/gpt-5.5 --variant=high
 
    # Legacy config:
-   opencode run "task" --model=openai/gpt-5.2-medium
-   opencode run "task" --model=openai/gpt-5.2-high
+   opencode run "task" --model=openai/gpt-5.5-medium
+   opencode run "task" --model=openai/gpt-5.5-high
    ```
 
 > **⚠️ Important**: Use the config file appropriate for your OpenCode version. Using the modern config with an older OpenCode version (v1.0.209 or below) will not work correctly.

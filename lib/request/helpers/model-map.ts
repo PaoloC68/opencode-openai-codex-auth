@@ -40,6 +40,16 @@ export const MODEL_MAP: Record<string, string> = {
 	"gpt-5.2-xhigh": "gpt-5.2",
 
 	// ============================================================================
+	// GPT-5.3 Models (treated like GPT-5.2 for reasoning variants)
+	// ============================================================================
+	"gpt-5.3": "gpt-5.3",
+	"gpt-5.3-none": "gpt-5.3",
+	"gpt-5.3-low": "gpt-5.3",
+	"gpt-5.3-medium": "gpt-5.3",
+	"gpt-5.3-high": "gpt-5.3",
+	"gpt-5.3-xhigh": "gpt-5.3",
+
+	// ============================================================================
 	// GPT-5.2 Codex Models (low/medium/high/xhigh)
 	// ============================================================================
 	"gpt-5.2-codex": "gpt-5.2-codex",
@@ -47,6 +57,50 @@ export const MODEL_MAP: Record<string, string> = {
 	"gpt-5.2-codex-medium": "gpt-5.2-codex",
 	"gpt-5.2-codex-high": "gpt-5.2-codex",
 	"gpt-5.2-codex-xhigh": "gpt-5.2-codex",
+
+	// ============================================================================
+	// GPT-5.3 Codex Models
+	// ============================================================================
+	"gpt-5.3-codex": "gpt-5.3-codex",
+	"gpt-5.3-codex-low": "gpt-5.3-codex",
+	"gpt-5.3-codex-medium": "gpt-5.3-codex",
+	"gpt-5.3-codex-high": "gpt-5.3-codex",
+	"gpt-5.3-codex-xhigh": "gpt-5.3-codex",
+
+	// GPT-5.3 Codex Spark (ultra-fast)
+	"gpt-5.3-codex-spark": "gpt-5.3-codex-spark",
+	"gpt-5.3-codex-spark-low": "gpt-5.3-codex-spark",
+	"gpt-5.3-codex-spark-medium": "gpt-5.3-codex-spark",
+	"gpt-5.3-codex-spark-high": "gpt-5.3-codex-spark",
+	"gpt-5.3-codex-spark-xhigh": "gpt-5.3-codex-spark",
+
+	// ============================================================================
+	// GPT-5.4 Models
+	// ============================================================================
+	"gpt-5.4": "gpt-5.4",
+	"gpt-5.4-fast": "gpt-5.4-fast",
+	"gpt-5.4-none": "gpt-5.4",
+	"gpt-5.4-low": "gpt-5.4",
+	"gpt-5.4-medium": "gpt-5.4",
+	"gpt-5.4-high": "gpt-5.4",
+	"gpt-5.4-xhigh": "gpt-5.4",
+	"gpt-5.4-mini": "gpt-5.4-mini",
+	"gpt-5.4-mini-fast": "gpt-5.4-mini-fast",
+	"gpt-5.4-mini-none": "gpt-5.4-mini",
+	"gpt-5.4-mini-low": "gpt-5.4-mini",
+	"gpt-5.4-mini-medium": "gpt-5.4-mini",
+	"gpt-5.4-mini-high": "gpt-5.4-mini",
+
+	// ============================================================================
+	// GPT-5.5 Models
+	// ============================================================================
+	"gpt-5.5": "gpt-5.5",
+	"gpt-5.5-fast": "gpt-5.5-fast",
+	"gpt-5.5-none": "gpt-5.5",
+	"gpt-5.5-low": "gpt-5.5",
+	"gpt-5.5-medium": "gpt-5.5",
+	"gpt-5.5-high": "gpt-5.5",
+	"gpt-5.5-xhigh": "gpt-5.5",
 
 	// ============================================================================
 	// GPT-5.1 Codex Mini Models

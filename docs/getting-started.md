@@ -319,7 +319,7 @@ opencode auth login
 
 ```bash
 # Quick test
-opencode run "write hello world to test.txt" --model=openai/gpt-5.1-codex-medium
+opencode run "write hello world to test.txt" --model=openai/gpt-5.5 --variant=medium
 
 # Or start interactive session
 opencode

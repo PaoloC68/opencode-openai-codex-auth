@@ -54,22 +54,29 @@ const CACHE_FILES: Record<ModelFamily, string> = {
  */
 export function getModelFamily(normalizedModel: string): ModelFamily {
 	// Order matters - check more specific patterns first
+	if (normalizedModel.includes("codex-max")) {
+		return "codex-max";
+	}
 	if (
 		normalizedModel.includes("gpt-5.2-codex") ||
 		normalizedModel.includes("gpt 5.2 codex")
 	) {
 		return "gpt-5.2-codex";
 	}
-	if (normalizedModel.includes("codex-max")) {
-		return "codex-max";
-	}
+	// Any other codex variant (including gpt-5.3-codex / spark) uses the generic codex prompt.
 	if (
 		normalizedModel.includes("codex") ||
 		normalizedModel.startsWith("codex-")
 	) {
 		return "codex";
 	}
-	if (normalizedModel.includes("gpt-5.2")) {
+	// GPT-5.2+ general models share the same prompt family today.
+	if (
+		normalizedModel.includes("gpt-5.2") ||
+		normalizedModel.includes("gpt-5.3") ||
+		normalizedModel.includes("gpt-5.4") ||
+		normalizedModel.includes("gpt-5.5")
+	) {
 		return "gpt-5.2";
 	}
 	return "gpt-5.1";

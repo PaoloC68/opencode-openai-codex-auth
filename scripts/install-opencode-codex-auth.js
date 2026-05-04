@@ -123,10 +123,10 @@ async function getKnownModelIds() {
 		join(repoRoot, "config", "opencode-modern.json"),
 	);
 	const legacyModels = Object.keys(
-		legacyTemplate?.provider?.openai?.models || {},
+		legacyTemplate?.provider?.["openai"]?.models || {},
 	);
 	const modernModels = Object.keys(
-		modernTemplate?.provider?.openai?.models || {},
+		modernTemplate?.provider?.["openai"]?.models || {},
 	);
 	return new Set([...legacyModels, ...modernModels]);
 }
@@ -309,8 +309,8 @@ async function main() {
 						? { ...existing.provider }
 						: {};
 				const openai =
-					provider.openai && typeof provider.openai === "object"
-						? { ...provider.openai }
+					provider["openai"] && typeof provider["openai"] === "object"
+						? { ...provider["openai"] }
 						: {};
 
 				const knownModelIds = await getKnownModelIds();
@@ -329,9 +329,9 @@ async function main() {
 				}
 
 				if (Object.keys(openai).length > 0) {
-					provider.openai = openai;
+					provider["openai"] = openai;
 				} else {
-					delete provider.openai;
+					delete provider["openai"];
 				}
 
 				const updates = [];
@@ -387,13 +387,16 @@ async function main() {
 				existing.provider && typeof existing.provider === "object"
 					? { ...existing.provider }
 					: {};
-			provider.openai = mergeOpenAIConfig(provider.openai, template.provider.openai);
+			provider["openai"] = mergeOpenAIConfig(
+				provider["openai"],
+				template.provider["openai"],
+			);
 			merged.provider = provider;
 			nextConfig = merged;
 
 			nextContent = applyJsoncUpdates(content, [
 				{ path: ["plugin"], value: merged.plugin },
-				{ path: ["provider", "openai"], value: merged.provider.openai },
+				{ path: ["provider", "openai"], value: merged.provider["openai"] },
 			]);
 		} catch (error) {
 			log(`Warning: Could not parse existing config (${error}). Replacing with template.`);

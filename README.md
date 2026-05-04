@@ -29,12 +29,12 @@ npx -y opencode-openai-codex-auth@latest
 Then:
 ```bash
 opencode auth login
-opencode run "write hello world to test.txt" --model=openai/gpt-5.2 --variant=medium
+opencode run "write hello world to test.txt" --model=openai/gpt-5.5 --variant=medium
 ```
 Legacy OpenCode (v1.0.209 and below):
 ```bash
 npx -y opencode-openai-codex-auth@latest --legacy
-opencode run "write hello world to test.txt" --model=openai/gpt-5.2-medium
+opencode run "write hello world to test.txt" --model=openai/gpt-5.5-medium
 ```
 Uninstall:
 ```bash
@@ -43,6 +43,11 @@ npx -y opencode-openai-codex-auth@latest --uninstall --all
 ```
 ---
 ## 📦 Models
+- **gpt-5.5** (none/low/medium/high/xhigh)
+- **gpt-5.4** (none/low/medium/high/xhigh)
+- **gpt-5.4-mini** (none/low/medium/high)
+- **gpt-5.3-codex** (low/medium/high/xhigh)
+- **gpt-5.3-codex-spark** (low/medium/high/xhigh)
 - **gpt-5.2** (none/low/medium/high/xhigh)
 - **gpt-5.2-codex** (low/medium/high/xhigh)
 - **gpt-5.1-codex-max** (low/medium/high/xhigh)

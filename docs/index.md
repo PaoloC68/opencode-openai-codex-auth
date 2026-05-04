@@ -76,7 +76,7 @@ npx -y opencode-openai-codex-auth@latest
 ### Quick Test
 
 ```bash
-opencode run "write hello world to test.txt" --model=openai/gpt-5.2 --variant=medium
+opencode run "write hello world to test.txt" --model=openai/gpt-5.5 --variant=medium
 ```
 
 ---
