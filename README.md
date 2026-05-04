@@ -44,8 +44,11 @@ npx -y opencode-openai-codex-auth@latest --uninstall --all
 ---
 ## 📦 Models
 - **gpt-5.5** (none/low/medium/high/xhigh)
+- **gpt-5.5-fast** (none/low/medium/high/xhigh)
 - **gpt-5.4** (none/low/medium/high/xhigh)
+- **gpt-5.4-fast** (none/low/medium/high/xhigh)
 - **gpt-5.4-mini** (none/low/medium/high)
+- **gpt-5.4-mini-fast** (none/low/medium/high)
 - **gpt-5.3-codex** (low/medium/high/xhigh)
 - **gpt-5.3-codex-spark** (low/medium/high/xhigh)
 - **gpt-5.2** (none/low/medium/high/xhigh)
