@@ -92,7 +92,18 @@ export function normalizeModel(model: string | undefined): string {
 		return "gpt-5.2-codex";
 	}
 
-	// 3. GPT-5.5 / 5.4 / 5.3 general purpose
+	// 3. GPT-5.6 named tiers, then 5.5 / 5.4 / 5.3 general purpose.
+	// The 5.6 checks must precede the 5.5 check: an unmapped id such as
+	// "gpt-5.6-sol-pro" would otherwise fall through to a plain 5.5 downgrade.
+	if (normalized.includes("gpt-5.6-sol") || normalized.includes("gpt 5.6 sol")) {
+		return "gpt-5.6-sol";
+	}
+	if (normalized.includes("gpt-5.6-terra") || normalized.includes("gpt 5.6 terra")) {
+		return "gpt-5.6-terra";
+	}
+	if (normalized.includes("gpt-5.6-luna") || normalized.includes("gpt 5.6 luna")) {
+		return "gpt-5.6-luna";
+	}
 	if (normalized.includes("gpt-5.5") || normalized.includes("gpt 5.5")) {
 		return "gpt-5.5";
 	}

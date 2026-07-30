@@ -103,6 +103,40 @@ export const MODEL_MAP: Record<string, string> = {
 	"gpt-5.5-xhigh": "gpt-5.5",
 
 	// ============================================================================
+	// GPT-5.6 Models (Sol / Terra / Luna)
+	//
+	// The ChatGPT/Codex backend serves the three named 5.6 tiers but rejects the
+	// bare "gpt-5.6" and "gpt-5.6-codex" ids with:
+	//   "The 'gpt-5.6' model is not supported when using Codex with a ChatGPT
+	//    account."
+	// so only sol/terra/luna are mapped here. Verified against
+	// POST https://chatgpt.com/backend-api/codex/responses on 2026-07-30.
+	// ============================================================================
+	"gpt-5.6-sol": "gpt-5.6-sol",
+	"gpt-5.6-sol-fast": "gpt-5.6-sol-fast",
+	"gpt-5.6-sol-none": "gpt-5.6-sol",
+	"gpt-5.6-sol-low": "gpt-5.6-sol",
+	"gpt-5.6-sol-medium": "gpt-5.6-sol",
+	"gpt-5.6-sol-high": "gpt-5.6-sol",
+	"gpt-5.6-sol-xhigh": "gpt-5.6-sol",
+
+	"gpt-5.6-terra": "gpt-5.6-terra",
+	"gpt-5.6-terra-fast": "gpt-5.6-terra-fast",
+	"gpt-5.6-terra-none": "gpt-5.6-terra",
+	"gpt-5.6-terra-low": "gpt-5.6-terra",
+	"gpt-5.6-terra-medium": "gpt-5.6-terra",
+	"gpt-5.6-terra-high": "gpt-5.6-terra",
+	"gpt-5.6-terra-xhigh": "gpt-5.6-terra",
+
+	"gpt-5.6-luna": "gpt-5.6-luna",
+	"gpt-5.6-luna-fast": "gpt-5.6-luna-fast",
+	"gpt-5.6-luna-none": "gpt-5.6-luna",
+	"gpt-5.6-luna-low": "gpt-5.6-luna",
+	"gpt-5.6-luna-medium": "gpt-5.6-luna",
+	"gpt-5.6-luna-high": "gpt-5.6-luna",
+	"gpt-5.6-luna-xhigh": "gpt-5.6-luna",
+
+	// ============================================================================
 	// GPT-5.1 Codex Mini Models
 	// ============================================================================
 	"gpt-5.1-codex-mini": "gpt-5.1-codex-mini",
