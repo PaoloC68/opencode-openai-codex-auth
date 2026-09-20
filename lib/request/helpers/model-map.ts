@@ -128,6 +128,7 @@ export const MODEL_MAP: Record<string, string> = {
 	"gpt-5.6-sol-medium": "gpt-5.6-sol",
 	"gpt-5.6-sol-high": "gpt-5.6-sol",
 	"gpt-5.6-sol-xhigh": "gpt-5.6-sol",
+	"gpt-5.6-sol-max": "gpt-5.6-sol",
 
 	"gpt-5.6-terra": "gpt-5.6-terra",
 	"gpt-5.6-terra-fast": "gpt-5.6-terra",
@@ -136,6 +137,7 @@ export const MODEL_MAP: Record<string, string> = {
 	"gpt-5.6-terra-medium": "gpt-5.6-terra",
 	"gpt-5.6-terra-high": "gpt-5.6-terra",
 	"gpt-5.6-terra-xhigh": "gpt-5.6-terra",
+	"gpt-5.6-terra-max": "gpt-5.6-terra",
 
 	"gpt-5.6-luna": "gpt-5.6-luna",
 	"gpt-5.6-luna-fast": "gpt-5.6-luna",
@@ -144,6 +146,7 @@ export const MODEL_MAP: Record<string, string> = {
 	"gpt-5.6-luna-medium": "gpt-5.6-luna",
 	"gpt-5.6-luna-high": "gpt-5.6-luna",
 	"gpt-5.6-luna-xhigh": "gpt-5.6-luna",
+	"gpt-5.6-luna-max": "gpt-5.6-luna",
 
 	// ============================================================================
 	// GPT-6 Models (Astra)
