@@ -70,12 +70,16 @@ export function getModelFamily(normalizedModel: string): ModelFamily {
 	) {
 		return "codex";
 	}
-	// GPT-5.2+ general models share the same prompt family today.
+	// GPT-5.2+ general models share the same prompt family today. Every newer
+	// family must be listed here: the trailing return is a gpt-5.1 catch-all, so
+	// an omitted family is silently served the oldest prompt in the repo.
 	if (
 		normalizedModel.includes("gpt-5.2") ||
 		normalizedModel.includes("gpt-5.3") ||
 		normalizedModel.includes("gpt-5.4") ||
-		normalizedModel.includes("gpt-5.5")
+		normalizedModel.includes("gpt-5.5") ||
+		normalizedModel.includes("gpt-5.6") ||
+		normalizedModel.includes("gpt-6")
 	) {
 		return "gpt-5.2";
 	}
