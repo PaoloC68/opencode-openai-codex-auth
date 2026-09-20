@@ -6,5 +6,7 @@ dist/
 .history/
 opencode.json
 .opencode/
+.omo/
+.serena/
 tmp
 .codex-cache*.tgz
