@@ -91,6 +91,18 @@ describe('Request Transformer Module', () => {
 				expect(normalizeModel('openai/gpt-5.2-codex-xhigh')).toBe('gpt-5.2-codex');
 			});
 
+			it('should normalize gpt-6 astra slugs without downgrading to gpt-5.1', async () => {
+				expect(normalizeModel('gpt-6-astra')).toBe('gpt-6-astra');
+				expect(normalizeModel('openai/gpt-6-astra')).toBe('gpt-6-astra');
+				expect(normalizeModel('gpt-6-astra-low')).toBe('gpt-6-astra');
+				expect(normalizeModel('gpt-6-astra-medium')).toBe('gpt-6-astra');
+				expect(normalizeModel('gpt-6-astra-high')).toBe('gpt-6-astra');
+				expect(normalizeModel('gpt-6-astra-xhigh')).toBe('gpt-6-astra');
+				expect(normalizeModel('gpt-6-astra-max')).toBe('gpt-6-astra');
+				expect(normalizeModel('GPT 6 Astra (OAuth)')).toBe('gpt-6-astra');
+				expect(normalizeModel('gpt-6-astra-unreleased-tier')).toBe('gpt-6-astra');
+			});
+
 			it('should normalize gpt-5.1 codex and mini slugs', async () => {
 				expect(normalizeModel('gpt-5.1-codex')).toBe('gpt-5.1-codex');
 				expect(normalizeModel('openai/gpt-5.1-codex')).toBe('gpt-5.1-codex');

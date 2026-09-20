@@ -92,7 +92,15 @@ export function normalizeModel(model: string | undefined): string {
 		return "gpt-5.2-codex";
 	}
 
-	// 3. GPT-5.6 named tiers, then 5.5 / 5.4 / 5.3 general purpose.
+	// 3. GPT-6 named tiers. Must precede every gpt-5 check, and the final
+	// "gpt-5" catch-all must never see a gpt-6 id: an unmapped "gpt-6-astra-pro"
+	// matches no gpt-5 pattern and would otherwise reach the default return and
+	// be silently downgraded to gpt-5.1.
+	if (normalized.includes("gpt-6-astra") || normalized.includes("gpt 6 astra")) {
+		return "gpt-6-astra";
+	}
+
+	// 4. GPT-5.6 named tiers, then 5.5 / 5.4 / 5.3 general purpose.
 	// The 5.6 checks must precede the 5.5 check: an unmapped id such as
 	// "gpt-5.6-sol-pro" would otherwise fall through to a plain 5.5 downgrade.
 	if (normalized.includes("gpt-5.6-sol") || normalized.includes("gpt 5.6 sol")) {
@@ -290,8 +298,15 @@ export function getReasoningConfig(
 		!isCodexMax &&
 		!isCodexMini;
 
-	// GPT 5.2, GPT 5.2 Codex, and Codex Max support xhigh reasoning
-	const supportsXhigh = isGpt52General || isGpt52Codex || isCodexMax;
+	const isGpt56 =
+		normalizedName.includes("gpt-5.6") || normalizedName.includes("gpt 5.6");
+	const isGpt6 =
+		normalizedName.includes("gpt-6") || normalizedName.includes("gpt 6");
+
+	// GPT 5.2, GPT 5.2 Codex, Codex Max, the GPT 5.6 tiers, and GPT-6 accept
+	// xhigh. Anything missing here is silently downgraded to high below.
+	const supportsXhigh =
+		isGpt52General || isGpt52Codex || isCodexMax || isGpt56 || isGpt6;
 
 	// GPT 5.1 general and GPT 5.2 general support "none" reasoning per:
 	// - OpenAI API docs: "gpt-5.1 defaults to none, supports: none, low, medium, high"

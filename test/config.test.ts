@@ -99,6 +99,16 @@ describe('Configuration Parsing', () => {
 			expect(highReasoning.summary).toBe('auto');
 		});
 
+			it('should preserve xhigh for gpt-6 astra and the gpt-5.6 tiers', () => {
+				const xhigh = { reasoningEffort: 'xhigh' as const };
+
+				expect(getReasoningConfig('gpt-6-astra', xhigh).effort).toBe('xhigh');
+				expect(getReasoningConfig('gpt-5.6-sol', xhigh).effort).toBe('xhigh');
+				expect(getReasoningConfig('gpt-5.6-terra', xhigh).effort).toBe('xhigh');
+				expect(getReasoningConfig('gpt-5.6-luna', xhigh).effort).toBe('xhigh');
+				expect(getReasoningConfig('gpt-5.1', xhigh).effort).toBe('high');
+			});
+
 			it('should respect custom summary setting', () => {
 				const detailedConfig = { reasoningSummary: 'detailed' as const };
 				const detailedReasoning = getReasoningConfig('gpt-5-codex', detailedConfig);
