@@ -10,6 +10,15 @@
  *
  * Key: The model ID as specified in opencode.json config
  * Value: The normalized model name to send to the API
+ *
+ * NOTE ON "-fast": the ChatGPT/Codex backend rejects every "-fast" model id with
+ *   "The '<id>' model is not supported when using Codex with a ChatGPT account."
+ * Verified against POST https://chatgpt.com/backend-api/codex/responses on
+ * 2026-09-20 for gpt-5.4-mini-fast, gpt-5.6-{sol,terra,luna}-fast and
+ * gpt-6-astra-fast. They are therefore mapped to their base model rather than
+ * passed through, so a "-fast" selection degrades to a working request instead
+ * of a hard 400. This also covers opencode's openai provider default, which
+ * resolves to gpt-5.6-terra-fast.
  */
 export const MODEL_MAP: Record<string, string> = {
 // ============================================================================
@@ -78,14 +87,14 @@ export const MODEL_MAP: Record<string, string> = {
 	// GPT-5.4 Models
 	// ============================================================================
 	"gpt-5.4": "gpt-5.4",
-	"gpt-5.4-fast": "gpt-5.4-fast",
+	"gpt-5.4-fast": "gpt-5.4",
 	"gpt-5.4-none": "gpt-5.4",
 	"gpt-5.4-low": "gpt-5.4",
 	"gpt-5.4-medium": "gpt-5.4",
 	"gpt-5.4-high": "gpt-5.4",
 	"gpt-5.4-xhigh": "gpt-5.4",
 	"gpt-5.4-mini": "gpt-5.4-mini",
-	"gpt-5.4-mini-fast": "gpt-5.4-mini-fast",
+	"gpt-5.4-mini-fast": "gpt-5.4-mini",
 	"gpt-5.4-mini-none": "gpt-5.4-mini",
 	"gpt-5.4-mini-low": "gpt-5.4-mini",
 	"gpt-5.4-mini-medium": "gpt-5.4-mini",
@@ -95,7 +104,7 @@ export const MODEL_MAP: Record<string, string> = {
 	// GPT-5.5 Models
 	// ============================================================================
 	"gpt-5.5": "gpt-5.5",
-	"gpt-5.5-fast": "gpt-5.5-fast",
+	"gpt-5.5-fast": "gpt-5.5",
 	"gpt-5.5-none": "gpt-5.5",
 	"gpt-5.5-low": "gpt-5.5",
 	"gpt-5.5-medium": "gpt-5.5",
@@ -113,7 +122,7 @@ export const MODEL_MAP: Record<string, string> = {
 	// POST https://chatgpt.com/backend-api/codex/responses on 2026-07-30.
 	// ============================================================================
 	"gpt-5.6-sol": "gpt-5.6-sol",
-	"gpt-5.6-sol-fast": "gpt-5.6-sol-fast",
+	"gpt-5.6-sol-fast": "gpt-5.6-sol",
 	"gpt-5.6-sol-none": "gpt-5.6-sol",
 	"gpt-5.6-sol-low": "gpt-5.6-sol",
 	"gpt-5.6-sol-medium": "gpt-5.6-sol",
@@ -121,7 +130,7 @@ export const MODEL_MAP: Record<string, string> = {
 	"gpt-5.6-sol-xhigh": "gpt-5.6-sol",
 
 	"gpt-5.6-terra": "gpt-5.6-terra",
-	"gpt-5.6-terra-fast": "gpt-5.6-terra-fast",
+	"gpt-5.6-terra-fast": "gpt-5.6-terra",
 	"gpt-5.6-terra-none": "gpt-5.6-terra",
 	"gpt-5.6-terra-low": "gpt-5.6-terra",
 	"gpt-5.6-terra-medium": "gpt-5.6-terra",
@@ -129,12 +138,32 @@ export const MODEL_MAP: Record<string, string> = {
 	"gpt-5.6-terra-xhigh": "gpt-5.6-terra",
 
 	"gpt-5.6-luna": "gpt-5.6-luna",
-	"gpt-5.6-luna-fast": "gpt-5.6-luna-fast",
+	"gpt-5.6-luna-fast": "gpt-5.6-luna",
 	"gpt-5.6-luna-none": "gpt-5.6-luna",
 	"gpt-5.6-luna-low": "gpt-5.6-luna",
 	"gpt-5.6-luna-medium": "gpt-5.6-luna",
 	"gpt-5.6-luna-high": "gpt-5.6-luna",
 	"gpt-5.6-luna-xhigh": "gpt-5.6-luna",
+
+	// ============================================================================
+	// GPT-6 Models (Astra)
+	//
+	// Reasoning efforts are low/medium/high/xhigh/max — "none" is rejected:
+	//   "Unsupported value: 'none' is not supported with the 'gpt-6-astra'
+	//    model. Supported values are: 'low', 'medium', 'high', 'xhigh', and
+	//    'max'."
+	// Only the "astra" tier is served: "gpt-6", "gpt-6-codex" and
+	// "gpt-6-astra-fast" are all rejected with "The '<id>' model is not
+	// supported when using Codex with a ChatGPT account."
+	// Verified against POST https://chatgpt.com/backend-api/codex/responses
+	// on 2026-09-06.
+	// ============================================================================
+	"gpt-6-astra": "gpt-6-astra",
+	"gpt-6-astra-low": "gpt-6-astra",
+	"gpt-6-astra-medium": "gpt-6-astra",
+	"gpt-6-astra-high": "gpt-6-astra",
+	"gpt-6-astra-xhigh": "gpt-6-astra",
+	"gpt-6-astra-max": "gpt-6-astra",
 
 	// ============================================================================
 	// GPT-5.1 Codex Mini Models
