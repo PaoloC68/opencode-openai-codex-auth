@@ -1,30 +1,79 @@
 import { logRequest, LOGGING_ENABLED } from "../logger.js";
 import type { SSEEventData } from "../types.js";
 
+interface SseParseResult {
+	finalResponse?: unknown;
+	lastResponseLike?: unknown;
+	lastEvent?: unknown;
+}
+
 /**
- * Parse SSE stream to extract final response
+ * Parse SSE stream to extract the final response.
+ *
+ * Tolerates "data:" with or without a trailing space, JSON split across
+ * several data lines, and malformed events interleaved with valid ones.
+ *
  * @param sseText - Complete SSE stream text
- * @returns Final response object or null if not found
+ * @returns The response.done payload, plus last-seen fallbacks
  */
-function parseSseStream(sseText: string): unknown | null {
-	const lines = sseText.split('\n');
+function parseSseStream(sseText: string): SseParseResult {
+	const lines = sseText.split(/\r?\n/);
+	let pendingData: string[] = [];
+	let finalResponse: unknown;
+	let lastResponseLike: unknown;
+	let lastEvent: unknown;
+
+	const processEvent = (parsed: SSEEventData) => {
+		lastEvent = parsed;
+		const event = parsed as { type?: string; response?: unknown };
+		if (!event || typeof event !== "object" || !("response" in event)) return;
+
+		if (event.response !== undefined) {
+			lastResponseLike = event.response;
+		}
+		if (event.type === "response.done" || event.type === "response.completed") {
+			finalResponse = event.response;
+		}
+	};
+
+	const tryFlush = (): boolean => {
+		if (pendingData.length === 0) return false;
+		try {
+			const parsed = JSON.parse(pendingData.join("\n")) as SSEEventData;
+			pendingData = [];
+			processEvent(parsed);
+			return true;
+		} catch {
+			return false;
+		}
+	};
 
 	for (const line of lines) {
-		if (line.startsWith('data: ')) {
-			try {
-				const data = JSON.parse(line.substring(6)) as SSEEventData;
+		if (line === "") {
+			tryFlush();
+			pendingData = [];
+			continue;
+		}
+		if (!line.startsWith("data:")) continue;
 
-				// Look for response.done event with final data
-				if (data.type === 'response.done' || data.type === 'response.completed') {
-					return data.response;
-				}
-			} catch (e) {
-				// Skip malformed JSON
-			}
+		const content = line.replace(/^data:\s?/, "");
+		pendingData.push(content);
+		if (tryFlush()) continue;
+
+		// The accumulated lines did not parse together, so retry this line alone:
+		// otherwise one malformed event poisons every event that follows it.
+		try {
+			const parsed = JSON.parse(content) as SSEEventData;
+			pendingData = [];
+			processEvent(parsed);
+		} catch {
+			// Keep accumulating - the JSON may span several data lines.
 		}
 	}
 
-	return null;
+	tryFlush();
+
+	return { finalResponse, lastResponseLike, lastEvent };
 }
 
 /**
@@ -54,11 +103,13 @@ export async function convertSseToJson(response: Response, headers: Headers): Pr
 		}
 
 		// Parse SSE events to extract the final response
-		const finalResponse = parseSseStream(fullText);
+		const parsed = parseSseStream(fullText);
+		const responsePayload =
+			parsed.finalResponse ?? parsed.lastResponseLike ?? parsed.lastEvent;
 
-		if (!finalResponse) {
-			console.error('[openai-codex-plugin] Could not find final response in SSE stream');
-			logRequest("stream-error", { error: "No response.done event found" });
+		if (!responsePayload) {
+			console.error('[openai-codex-plugin] Could not find JSON in SSE stream');
+			logRequest("stream-error", { error: "No JSON events found in SSE stream" });
 
 			// Return original stream if we can't parse
 			return new Response(fullText, {
@@ -72,7 +123,13 @@ export async function convertSseToJson(response: Response, headers: Headers): Pr
 		const jsonHeaders = new Headers(headers);
 		jsonHeaders.set('content-type', 'application/json; charset=utf-8');
 
-		return new Response(JSON.stringify(finalResponse), {
+		if (!parsed.finalResponse) {
+			logRequest("stream-warning", {
+				warning: "No final response event; using last JSON event",
+			});
+		}
+
+		return new Response(JSON.stringify(responsePayload), {
 			status: response.status,
 			statusText: response.statusText,
 			headers: jsonHeaders,
