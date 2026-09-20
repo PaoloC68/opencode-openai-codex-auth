@@ -12,7 +12,7 @@
 ---
 ## 💡 Philosophy
 > **"One config. Every model."**
-OpenCode should feel effortless. This plugin keeps the setup minimal while giving you full GPT‑5.x + Codex access via ChatGPT OAuth.
+OpenCode should feel effortless. This plugin keeps the setup minimal while giving you full GPT‑5.x / GPT‑6 + Codex access via ChatGPT OAuth.
 ```
 ┌─────────────────────────────────────────────────────────┐
 │                                                         │
@@ -43,6 +43,10 @@ npx -y opencode-openai-codex-auth@latest --uninstall --all
 ```
 ---
 ## 📦 Models
+- **gpt-6-astra** (low/medium/high/xhigh/max)
+- **gpt-5.6-sol** (none/low/medium/high/xhigh/max)
+- **gpt-5.6-terra** (none/low/medium/high/xhigh/max)
+- **gpt-5.6-luna** (none/low/medium/high/xhigh/max)
 - **gpt-5.5** (none/low/medium/high/xhigh)
 - **gpt-5.5-fast** (none/low/medium/high/xhigh)
 - **gpt-5.4** (none/low/medium/high/xhigh)
@@ -57,6 +61,13 @@ npx -y opencode-openai-codex-auth@latest --uninstall --all
 - **gpt-5.1-codex** (low/medium/high)
 - **gpt-5.1-codex-mini** (medium/high)
 - **gpt-5.1** (none/low/medium/high)
+
+> `gpt-6-astra` does not accept `none`; the Codex backend rejects it explicitly.
+>
+> The `-fast` ids are accepted but resolve to their base model. The Codex
+> backend serves no separate fast tier over ChatGPT OAuth and returns
+> `"The '<id>' model is not supported when using Codex with a ChatGPT account"`
+> for every `-fast` id, so they are normalized rather than passed through.
 ---
 ## 🧩 Configuration
 - Modern (OpenCode v1.0.210+): `config/opencode-modern.json`
@@ -66,7 +77,7 @@ Minimal configs are not supported for GPT‑5.x; use the full configs above.
 ---
 ## ✅ Features
 - ChatGPT Plus/Pro OAuth authentication (official flow)
-- 30 model presets across GPT‑5.5 / GPT‑5.4 / GPT‑5.3 / GPT‑5.2 / GPT‑5.1 families
+- 81 reasoning presets across 18 models, spanning the GPT‑6 / GPT‑5.6 / GPT‑5.5 / GPT‑5.4 / GPT‑5.3 / GPT‑5.2 / GPT‑5.1 families
 - Variant system support (v1.0.210+) + legacy presets
 - Multimodal input enabled for all models
 - Usage‑aware errors + automatic token refresh
