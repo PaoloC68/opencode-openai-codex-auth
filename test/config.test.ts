@@ -109,6 +109,14 @@ describe('Configuration Parsing', () => {
 				expect(getReasoningConfig('gpt-5.1', xhigh).effort).toBe('high');
 			});
 
+			it('should keep none for gpt-6 sol/luna but lift it to low for astra', () => {
+				const none = { reasoningEffort: 'none' as const };
+
+				expect(getReasoningConfig('gpt-6-luna', none).effort).toBe('none');
+				expect(getReasoningConfig('gpt-6-sol', none).effort).toBe('none');
+				expect(getReasoningConfig('gpt-6-astra', none).effort).toBe('low');
+			});
+
 			it('should respect custom summary setting', () => {
 				const detailedConfig = { reasoningSummary: 'detailed' as const };
 				const detailedReasoning = getReasoningConfig('gpt-5-codex', detailedConfig);

@@ -304,6 +304,8 @@ export function getReasoningConfig(
 		normalizedName.includes("gpt-5.6") || normalizedName.includes("gpt 5.6");
 	const isGpt6 =
 		normalizedName.includes("gpt-6") || normalizedName.includes("gpt 6");
+	// Sol and Luna accept "none"; Astra rejects it (backend-verified 2026-09-23).
+	const isGpt6SolOrLuna = /gpt[- ]6[- ](sol|luna)/.test(normalizedName);
 
 	// GPT 5.2, GPT 5.2 Codex, Codex Max, the GPT 5.6 tiers, and GPT-6 accept
 	// xhigh. Anything missing here is silently downgraded to high below.
@@ -316,7 +318,7 @@ export function getReasoningConfig(
 	// - Codex CLI: docs/config.md lists "none" as valid for model_reasoning_effort
 	// - gpt-5.2 (being newer) also supports: none, low, medium, high, xhigh
 	// - Codex models (including GPT-5.2 Codex) do NOT support "none"
-	const supportsNone = isGpt52General || isGpt51General;
+	const supportsNone = isGpt52General || isGpt51General || isGpt6SolOrLuna;
 
 	// Default based on model type (Codex CLI defaults)
 	// Note: OpenAI docs say gpt-5.1 defaults to "none", but we default to "medium"
@@ -350,7 +352,7 @@ export function getReasoningConfig(
 	}
 
 	// For models that don't support "none", upgrade to "low"
-	// (Codex models don't support "none" - only GPT-5.1 and GPT-5.2 general purpose do)
+	// (Codex models don't support "none" - only GPT-5.1/5.2 general purpose and GPT-6 Sol/Luna do)
 	if (!supportsNone && effort === "none") {
 		effort = "low";
 	}
