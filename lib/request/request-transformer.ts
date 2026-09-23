@@ -92,12 +92,14 @@ export function normalizeModel(model: string | undefined): string {
 		return "gpt-5.2-codex";
 	}
 
-	// 3. GPT-6 named tiers. Must precede every gpt-5 check, and the final
-	// "gpt-5" catch-all must never see a gpt-6 id: an unmapped "gpt-6-astra-pro"
-	// matches no gpt-5 pattern and would otherwise reach the default return and
-	// be silently downgraded to gpt-5.1.
-	if (normalized.includes("gpt-6-astra") || normalized.includes("gpt 6 astra")) {
-		return "gpt-6-astra";
+	// 3. GPT-6 named tiers (astra, sol, luna, ...). Must precede every gpt-5
+	// check, and the final "gpt-5" catch-all must never see a gpt-6 id: it would
+	// be rewritten to gpt-5.1, which the backend rejects outright. The tier is
+	// kept and any suffix dropped ("gpt-6-luna-fast", "GPT 6 Luna (OAuth)" ->
+	// "gpt-6-luna"), so a new tier needs no code change.
+	const gpt6Tier = normalized.match(/gpt[- ]6[- ]([a-z]+)/)?.[1];
+	if (gpt6Tier) {
+		return `gpt-6-${gpt6Tier}`;
 	}
 
 	// 4. GPT-5.6 named tiers, then 5.5 / 5.4 / 5.3 general purpose.

@@ -149,17 +149,20 @@ export const MODEL_MAP: Record<string, string> = {
 	"gpt-5.6-luna-max": "gpt-5.6-luna",
 
 	// ============================================================================
-	// GPT-6 Models (Astra)
+	// GPT-6 Models (Astra / Sol / Luna)
 	//
-	// Reasoning efforts are low/medium/high/xhigh/max — "none" is rejected:
+	// Astra reasoning efforts are low/medium/high/xhigh/max — "none" is rejected:
 	//   "Unsupported value: 'none' is not supported with the 'gpt-6-astra'
 	//    model. Supported values are: 'low', 'medium', 'high', 'xhigh', and
 	//    'max'."
-	// Only the "astra" tier is served: "gpt-6", "gpt-6-codex" and
-	// "gpt-6-astra-fast" are all rejected with "The '<id>' model is not
-	// supported when using Codex with a ChatGPT account."
-	// Verified against POST https://chatgpt.com/backend-api/codex/responses
-	// on 2026-09-06.
+	// "gpt-6", "gpt-6-codex" and "gpt-6-astra-fast" are all rejected with
+	// "The '<id>' model is not supported when using Codex with a ChatGPT
+	// account." Verified against POST
+	// https://chatgpt.com/backend-api/codex/responses on 2026-09-06.
+	//
+	// Sol and Luna are served as well and accept none..max; their "-fast" ids
+	// are rejected like Astra's (verified 2026-09-23). They need no entries
+	// here: normalizeModel keeps any "gpt-6-<tier>" id and drops its suffix.
 	// ============================================================================
 	"gpt-6-astra": "gpt-6-astra",
 	"gpt-6-astra-low": "gpt-6-astra",
